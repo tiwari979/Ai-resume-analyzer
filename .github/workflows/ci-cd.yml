@@ -34,7 +34,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./${{ matrix.service }}
-        run: npm ci
+        run: npm install
 
       - name: Run linter (if configured)
         working-directory: ./${{ matrix.service }}
