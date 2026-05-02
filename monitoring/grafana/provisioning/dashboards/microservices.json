@@ -1,0 +1,84 @@
+{
+  "title": "AI Resume Analyzer - Microservices Dashboard",
+  "uid": "ai-resume-analyzer",
+  "version": 1,
+  "schemaVersion": 30,
+  "refresh": "30s",
+  "time": { "from": "now-1h", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Resumes Processed (Total)",
+      "type": "stat",
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 4 },
+      "targets": [{
+        "expr": "resume_service_resumes_processed_total",
+        "legendFormat": "Resumes Processed"
+      }],
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "unit": "short" } }
+    },
+    {
+      "id": 2,
+      "title": "AI Analyses Completed (Total)",
+      "type": "stat",
+      "gridPos": { "x": 6, "y": 0, "w": 6, "h": 4 },
+      "targets": [{
+        "expr": "ai_service_analyses_completed_total",
+        "legendFormat": "Analyses Completed"
+      }],
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "unit": "short" } }
+    },
+    {
+      "id": 3,
+      "title": "HTTP Request Rate - All Services",
+      "type": "graph",
+      "gridPos": { "x": 0, "y": 4, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "rate(user_service_http_request_duration_seconds_count[1m])",
+          "legendFormat": "user-service"
+        },
+        {
+          "expr": "rate(resume_service_http_request_duration_seconds_count[1m])",
+          "legendFormat": "resume-service"
+        },
+        {
+          "expr": "rate(ai_service_http_request_duration_seconds_count[1m])",
+          "legendFormat": "ai-service"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "P95 Response Time - Resume Service",
+      "type": "graph",
+      "gridPos": { "x": 0, "y": 12, "w": 12, "h": 8 },
+      "targets": [{
+        "expr": "histogram_quantile(0.95, rate(resume_service_http_request_duration_seconds_bucket[5m]))",
+        "legendFormat": "P95 Latency (resume-service)"
+      }],
+      "fieldConfig": { "defaults": { "unit": "s" } }
+    },
+    {
+      "id": 5,
+      "title": "Node.js Heap Used - All Services",
+      "type": "graph",
+      "gridPos": { "x": 0, "y": 20, "w": 12, "h": 8 },
+      "targets": [
+        {
+          "expr": "user_service_nodejs_heap_size_used_bytes",
+          "legendFormat": "user-service heap"
+        },
+        {
+          "expr": "resume_service_nodejs_heap_size_used_bytes",
+          "legendFormat": "resume-service heap"
+        },
+        {
+          "expr": "ai_service_nodejs_heap_size_used_bytes",
+          "legendFormat": "ai-service heap"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "bytes" } }
+    }
+  ]
+}

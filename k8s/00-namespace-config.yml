@@ -1,0 +1,31 @@
+---
+# Namespace for all resources
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ai-resume-analyzer
+  labels:
+    app: ai-resume-analyzer
+
+---
+# Shared ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: ai-resume-analyzer
+data:
+  AI_SERVICE_URL: "http://ai-service:3003"
+  NODE_ENV: "production"
+  JWT_EXPIRES_IN: "24h"
+
+---
+# Secret (base64 encode your values in production!)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secrets
+  namespace: ai-resume-analyzer
+type: Opaque
+stringData:
+  JWT_SECRET: "your-super-secret-jwt-key-change-in-production"

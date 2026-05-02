@@ -1,0 +1,33 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'ai-resume-analyzer'
+
+scrape_configs:
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # User Service metrics
+  - job_name: 'user-service'
+    static_configs:
+      - targets: ['user-service:3001']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # Resume Service metrics
+  - job_name: 'resume-service'
+    static_configs:
+      - targets: ['resume-service:3002']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # AI Service metrics
+  - job_name: 'ai-service'
+    static_configs:
+      - targets: ['ai-service:3003']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
